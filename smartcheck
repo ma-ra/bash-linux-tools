@@ -1,0 +1,28 @@
+#!/bin/bash
+
+for i in /dev/sd? ; do 
+    echo -e "\n######## $i"
+    smartctl -A $i | awk ' 
+        /SMART Attributes Data Structure revision number/ {next}
+        /smartctl/ {next}
+        /Copyright/ {next}
+        /===/ {next}
+        $1 == "" {next}
+
+        /Raw_Read_Error_Rate/ {next}
+        /Start_Stop_Coun/ {next}
+        /Seek_Error_Rate/ {next}
+        /Power_On_Hours/ {next}
+        /Power_Cycle_Count/ {next}
+        /Airflow_Temperature_Cel/ {next}
+        /Power-Off_Retract_Count/ {next}
+        /Load_Cycle_Count/ {next}
+        /Temperature_Celsius/ {next}
+        /Spin_Up_Time/ {next}
+        /Seek_Time_Performance/ {next}
+        /Throughput_Performance/ {next}
+        $10 == 0 {next} 
+
+        {print $0} 
+    '
+done
