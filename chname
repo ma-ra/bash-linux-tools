@@ -1,0 +1,20 @@
+#!/bin/bash
+
+RENAME=false
+
+REGEXP=$1
+shift
+
+if [[ $1 == "--go" ]] ; then
+    RENAME=true
+    shift
+fi
+for i in "$@" ; do
+    SOURCE=$i
+    DEST=`echo $i | sed -r "$REGEXP"`
+    echo "$SOURCE -> $DEST"
+#    echo "$DEST"
+    if [[ $RENAME == true ]] ; then
+        mv "$SOURCE" "$DEST"
+    fi
+done
